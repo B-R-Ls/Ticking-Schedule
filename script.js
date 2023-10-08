@@ -1,5 +1,7 @@
+//Grabs the save button
 var saveInput = $('.saveBtn');
 
+//Based on location, upon click it will grab the text and save it to local storage based on location.
 saveInput.on('click', function(event) {
   var target = $(event.target);
   var item = target.siblings('.hour').text();
@@ -11,23 +13,30 @@ saveInput.on('click', function(event) {
   
 });
 
+//Places all the saved text if any
 function renderSaves() {
   for (var y = 9; y <= 11; y++) {
     var info = localStorage.getItem('scheduleSave' + y +'AM')
     $('#hour-' + y).children().eq(1).append(info);
   };
   var hour = 12
-  for (var g = 1; g <= 12; g++) {
+  for (var g = 0; g <= 12; g++) {
     var text = localStorage.getItem('scheduleSave' + g +'PM')
     $('#hour-' + hour).children().eq(1).append(text);
     hour++;
+    if (g === 12){
+      hour = 12;
+      $('#hour-' + hour).children().eq(1).append(text);
+    }
   };
 };
 
+//used to remove the save message
 function remove(){
   $('#Display').text('')
 }
 
+//places time on page using dayjs
 function displaytime(){
   var datetime = dayjs().format('MMM D, YYYY, hh:mm:ss a');
   $('#currentDay').text(datetime);
@@ -35,6 +44,7 @@ function displaytime(){
 
 var i = 8;
 
+//changes backgrounds based on time
 function editboxes(){
   var time = dayjs().format('H');
   Number(time);
@@ -57,7 +67,8 @@ function editboxes(){
   }
 }
 
-setInterval(editboxes, 500);
+//initializing editboxes, displaytime, and rendersaves
+setInterval(editboxes, 200);
 editboxes();
 
 setInterval(displaytime, 1000);
